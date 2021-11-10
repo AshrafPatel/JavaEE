@@ -11,6 +11,15 @@
 	<% 
 	String name = request.getParameter("name");
 	out.println("<p>" + name + "</p>");
+	
+	String pets[] = request.getParameterValues("pets");
+	if (pets != null) {
+		out.println("<ul>");
+		for(String pet:pets) {
+			out.println("<li>" + pet + "</li>");
+		}
+		out.println("</ul>");
+	}
 	%>
 	<jsp:include page="my-footer.jsp"/>
 </body>
