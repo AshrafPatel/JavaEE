@@ -12,3 +12,7 @@
 0:0:0:0:0:0:0:1 - - [10/Nov/2021:12:37:18 +0000] "GET /JavaEEWeb/form-response.jsp HTTP/1.1" 200 231
 0:0:0:0:0:0:0:1 - - [10/Nov/2021:12:37:32 +0000] "GET /JavaEEWeb/NewFile.jsp HTTP/1.1" 200 338
 0:0:0:0:0:0:0:1 - - [10/Nov/2021:12:37:35 +0000] "GET /JavaEEWeb/form-response.jsp?name=dvsvsd HTTP/1.1" 200 233
+0:0:0:0:0:0:0:1 - - [10/Nov/2021:12:57:46 +0000] "GET /JavaEEWeb/NewFile.jsp HTTP/1.1" 200 620
+0:0:0:0:0:0:0:1 - - [10/Nov/2021:12:57:54 +0000] "GET /JavaEEWeb/form-response.jsp?name=sdfssfs&pets=Cat&pets=Hamster HTTP/1.1" 200 279
+0:0:0:0:0:0:0:1 - - [10/Nov/2021:14:18:16 +0000] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [10/Nov/2021:14:18:16 +0000] "GET /favicon.ico HTTP/1.1" 404 762
