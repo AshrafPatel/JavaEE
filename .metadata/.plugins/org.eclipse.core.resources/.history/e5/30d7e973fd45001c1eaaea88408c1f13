@@ -1,0 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+	<%
+		String favLang = request.getParameter("favLang");
+	
+		Cookie aCookie = new Coookie("myFavLang", favLang);
+		
+		aCookie.setMaxAge(60*60*24*360); //second/minute/day/year
+		
+		response.addCookie(aCookie);
+	%>
+</head>
+<body>
+	
+</body>
+</html>

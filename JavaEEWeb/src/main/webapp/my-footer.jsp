@@ -1,1 +1,1 @@
-<p align="centre">Last Updated: <%= new java.util.Date() %></p>
+<p align="center">Last Updated: <%= new java.util.Date() %></p>
