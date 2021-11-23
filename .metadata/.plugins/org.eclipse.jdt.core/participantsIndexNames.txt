@@ -7,3 +7,5 @@ C:\Users\4shr4\OneDrive\Desktop\Java Workspace\.metadata\.plugins\org.eclipse.js
 \JavaEEWeb\src\main\java
 C:\Users\4shr4\OneDrive\Desktop\Java Workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2840704789.index
 \jspdemo\src\main\java
+C:\Users\4shr4\OneDrive\Desktop\Java Workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2742434771.index
+\Java_i18n\src\main\java
