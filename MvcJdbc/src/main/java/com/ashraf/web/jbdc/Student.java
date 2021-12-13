@@ -9,22 +9,21 @@ public class Student {
 	private int age;
 	
 	
-	public Student(String lastName, String firstName, String email, String course, int age) {
-		this.lastName = lastName;
+	public Student(String firstName, String lastName, String email, int age, String course) {
 		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
-		this.course = course;
 		this.age = age;
+		this.course = course;
 	}
 
-	public Student(int id, String lastName, String firstName, String email, String course, int age) {
-		super();
+	public Student(int id, String lastName, String firstName, String email, int tempAge, String course) {
 		this.id = id;
-		this.lastName = lastName;
 		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
+		this.age = tempAge;
 		this.course = course;
-		this.age = age;
 	}
 	
 

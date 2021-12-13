@@ -38,10 +38,78 @@ public class StudentControllerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			//Read the command
+			String command = request.getParameter("command");
+			
+			if (command==null) {
+				listStudents(request, response);
+			}
+			
+			switch(command) {
+				case "LIST":
+					listStudents(request, response);
+					break;
+				case "ADD":
+					addStudent(request, response);
+					break;
+				case "LOAD":
+					loadStudent(request, response);
+					break;
+				case "UPDATE":
+					updateStudent(request, response);
+					break;
+				default:
+					listStudents(request, response);
+					break;
+			}
 			listStudents(request, response);
 		} catch(Exception e) {
 			throw new ServletException(e);
 		}
+	}
+
+
+	private void updateStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		int id = Integer.parseInt(request.getParameter("studId"));
+		String fName = request.getParameter("fName");
+		String lName = request.getParameter("lName");
+		String email = request.getParameter("email");
+		int age = Integer.parseInt(request.getParameter("age"));
+		String course = request.getParameter("course");
+		
+		Student updatedStudent = new Student(id, fName, lName, email, age, course);
+		
+		studentDbUtil.updateStudent(updatedStudent);
+		
+		listStudents(request, response);
+	}
+
+
+	private void addStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		String fName = request.getParameter("fName");
+		String lName = request.getParameter("lName");
+		String email = request.getParameter("email");
+		int age = Integer.parseInt(request.getParameter("age"));
+		String course = request.getParameter("course");
+		
+		Student student = new Student(fName, lName, email, age, course);
+		
+		studentDbUtil.addStudent(student);
+		
+		listStudents(request, response);
+	}
+	
+	private void loadStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String studId = request.getParameter("student");
+		
+		Student theStudent = studentDbUtil.getStudent(studId);
+		
+		request.setAttribute("STUDENT", theStudent);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/update-student.jsp");
+		dispatcher.forward(request, response);
 	}
 
 
@@ -50,7 +118,7 @@ public class StudentControllerServlet extends HttpServlet {
 		
 		request.setAttribute("STUDENTS", students);
 		
-		RequestDispatcher dispatcher =  request.getRequestDispatcher("/list_student.jsp");
+		RequestDispatcher dispatcher =  request.getRequestDispatcher("/list-student.jsp");
 		dispatcher.forward(request, response);
 		
 	}
