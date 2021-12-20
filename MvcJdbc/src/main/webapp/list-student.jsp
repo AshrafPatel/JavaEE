@@ -25,7 +25,13 @@
 				onclick="window.location.href='add-student.jsp'; return false;" 
 				class="add-student-button"
 			/>
-		
+			<!--  add a search box -->
+            <form action="StudentControllerServlet" method="GET">
+                <input type="hidden" name="command" value="SEARCH" />
+                Search student: <input type="text" name="searchTerm" />
+                <input type="submit" value="Search" class="add-student-button" />
+            </form>
+            
 			<table>
 				<tr>
 					<th>First Name</th>
@@ -49,9 +55,13 @@
 				
 				<c:forEach var="temp" items="${STUDENTS}">
 				<%-- CREATE THE URL --%>
-				<c:url var="tempURL" value="StudentControllerServlet">
+				<c:url var="tempURLUpdate" value="StudentControllerServlet">
 					<c:param name="command" value="LOAD"/>
 					<c:param name="student" value="${temp.id }"/>
+				</c:url>
+				<c:url var="tempURLDelete" value="StudentControllerServlet">
+					<c:param name="command" value="DELETE"/>
+					<c:param name="student" value="${temp.id}"/>
 				</c:url>
 				
 				<tr>
@@ -60,7 +70,10 @@
 					<td>${temp.email}</td>
 					<td>${temp.age}</td>
 					<td>${temp.course}</td>
-					<td><a href="${tempURL}">Update</a></td>
+					<td>
+						<a href="${tempURLUpdate}">Update</a> | 
+						<a href="${tempURLDelete}" onclick="if (!(confirm('Are you sure you wish to delete this student?'))) return false;">Delete</a>
+					</td>
 				</tr>
 				</c:forEach>
 			</table>

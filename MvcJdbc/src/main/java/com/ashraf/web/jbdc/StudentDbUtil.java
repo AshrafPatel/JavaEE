@@ -72,7 +72,7 @@ public class StudentDbUtil {
 	public void addStudent(Student student) throws Exception {
 		// TODO Auto-generated method stub
 		Connection cn = null;
-		Statement stmnt = null;
+		PreparedStatement preparedStatement = null;
 		
 		try {
 			cn = dataSource.getConnection();
@@ -82,7 +82,7 @@ public class StudentDbUtil {
 						+ "values(?, ?, ?, ?, ?)";
 	
 			
-			PreparedStatement preparedStatement = cn.prepareStatement(sql);
+			preparedStatement = cn.prepareStatement(sql);
 			
 			preparedStatement.setString(1, student.getFirstName());
 			preparedStatement.setString(2, student.getLastName());
@@ -93,7 +93,7 @@ public class StudentDbUtil {
 			preparedStatement.executeUpdate();
 		}
 		finally {
-			close(cn, stmnt, null);
+			close(cn, preparedStatement, null);
 		}
 	}
 
@@ -102,7 +102,7 @@ public class StudentDbUtil {
 		Student stud = null;
 		
 		Connection myCn = null;
-		Statement myStmnt = null;
+		PreparedStatement pStatement = null;
 		ResultSet myRs = null;
 		
 		int studentId;
@@ -114,7 +114,7 @@ public class StudentDbUtil {
 			
 			String sql = "select * from student where id=?";
 			
-			PreparedStatement pStatement = myCn.prepareStatement(sql);
+			pStatement = myCn.prepareStatement(sql);
 			pStatement.setInt(1, studentId);
 			
 			myRs = pStatement.executeQuery();
@@ -134,7 +134,7 @@ public class StudentDbUtil {
 			return stud;
 		}
 		finally {
-			close(myCn, myStmnt, myRs);
+			close(myCn, pStatement, myRs);
 		}
 	}
 
@@ -161,5 +161,70 @@ public class StudentDbUtil {
 			close(myCn, myStmnt, null);
 		}
 		
+	}
+
+	public void deleteStudent(int id) throws Exception {
+		// TODO Auto-generated method stub
+		Connection myCn = null;
+		PreparedStatement myStmnt = null;
+		
+		try {
+			myCn = dataSource.getConnection();
+			String sql = "delete student where id=?";
+			myStmnt= myCn.prepareStatement(sql);
+			myStmnt.setInt(1, id);
+			
+			myStmnt.execute();
+		} finally {
+			close(myCn, myStmnt, null);
+		}
+	}
+
+	public List<Student> searchStudents(String searchTerm) throws Exception {
+		// TODO Auto-generated method stub
+		List<Student> students = new ArrayList<>();
+		
+		Connection myCn = null;
+		PreparedStatement pStmnt = null;
+		ResultSet myRs = null;
+		
+		try {
+			myCn = dataSource.getConnection();
+			
+			if (searchTerm != null && searchTerm.trim().length() > 0) {
+				String sql = "SELECT * FROM students WHERE ? in (first_name, last_name, email, age, course)";
+				pStmnt = myCn.prepareStatement(sql);
+				String searchTermLike = "%" + searchTerm + "%";
+				pStmnt.setString(1, searchTermLike);
+			} else {
+				String sql = "SELECT * FROM students";
+				pStmnt = myCn.prepareStatement(sql);
+			}
+			
+			myRs = pStmnt.executeQuery();
+            
+            // retrieve data from result set row
+            while (myRs.next()) {
+                
+                // retrieve data from result set row
+                int id = myRs.getInt("id");
+                String firstName = myRs.getString("first_name");
+                String lastName = myRs.getString("last_name");
+                String email = myRs.getString("email");
+                int age = myRs.getInt("age");
+                String course = myRs.getString("course");
+                
+                // create new student object
+                Student tStudent = new Student(id, firstName, lastName, email, age, course);
+                
+                // add it to the list of students
+                students.add(tStudent);            
+            }
+            
+            return students;
+        } finally {
+            // clean up JDBC objects
+            close(myCn, pStmnt, myRs);
+        } 
 	}
 }

@@ -49,14 +49,14 @@ public class StudentControllerServlet extends HttpServlet {
 				case "LIST":
 					listStudents(request, response);
 					break;
-				case "ADD":
-					addStudent(request, response);
-					break;
 				case "LOAD":
 					loadStudent(request, response);
 					break;
-				case "UPDATE":
-					updateStudent(request, response);
+				case "DELETE":
+					deleteStudent(request, response);
+					break;
+				case "SEARCH":
+					searchStudent(request, response);
 					break;
 				default:
 					listStudents(request, response);
@@ -66,6 +66,28 @@ public class StudentControllerServlet extends HttpServlet {
 		} catch(Exception e) {
 			throw new ServletException(e);
 		}
+	}
+
+
+	private void searchStudent(HttpServletRequest request, HttpServletResponse response) {
+        String searchTerm = request.getParameter("searchTerm");
+        List<Student> students = studentDbUtil.searchStudents(searchTerm);
+        
+        // add students to the request
+        request.setAttribute("STUDENT_LIST", students);
+                
+        // send to JSP page (view)
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/list-students.jsp");
+        dispatcher.forward(request, response);
+	}
+
+
+	private void deleteStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		int id = Integer.parseInt(request.getParameter("studId"));
+		studentDbUtil.deleteStudent(id);
+		listStudents(request, response);
+		
 	}
 
 
@@ -82,7 +104,7 @@ public class StudentControllerServlet extends HttpServlet {
 		
 		studentDbUtil.updateStudent(updatedStudent);
 		
-		listStudents(request, response);
+		response.sendRedirect(request.getContextPath() + "/StudentControllerServlet?command=LIST");
 	}
 
 
@@ -98,7 +120,7 @@ public class StudentControllerServlet extends HttpServlet {
 		
 		studentDbUtil.addStudent(student);
 		
-		listStudents(request, response);
+		response.sendRedirect(request.getContextPath() + "/StudentControllerServlet?command=LIST");
 	}
 	
 	private void loadStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -122,5 +144,28 @@ public class StudentControllerServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 		
 	}
-
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			//Read the command
+			String command = request.getParameter("command");
+			if (command==null) {
+				listStudents(request, response);
+			}
+			
+			switch(command) {
+				case "ADD":
+					addStudent(request, response);
+					break;
+				case "UPDATE":
+					updateStudent(request, response);
+					break;
+				default:
+					listStudents(request, response);
+					break;
+			}
+		} catch(Exception e) {
+			throw new ServletException(e);
+		}
+	}
 }
