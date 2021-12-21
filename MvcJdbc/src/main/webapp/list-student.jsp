@@ -14,7 +14,7 @@
 <body>
 	<div id="wrapper">
 		<div id="header">
-			<h2>Huber College Student Records</h2>
+			<a href="StudentControllerServlet"><h2>Huber College Student Records</h2></a>
 		</div>
 	</div>
 	<div id="container">

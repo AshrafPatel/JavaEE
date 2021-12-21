@@ -42,7 +42,7 @@ public class StudentControllerServlet extends HttpServlet {
 			String command = request.getParameter("command");
 			
 			if (command==null) {
-				listStudents(request, response);
+				command = "LIST";
 			}
 			
 			switch(command) {
@@ -62,29 +62,24 @@ public class StudentControllerServlet extends HttpServlet {
 					listStudents(request, response);
 					break;
 			}
-			listStudents(request, response);
 		} catch(Exception e) {
 			throw new ServletException(e);
 		}
 	}
 
 
-	private void searchStudent(HttpServletRequest request, HttpServletResponse response) {
+	private void searchStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String searchTerm = request.getParameter("searchTerm");
         List<Student> students = studentDbUtil.searchStudents(searchTerm);
-        
-        // add students to the request
-        request.setAttribute("STUDENT_LIST", students);
-                
-        // send to JSP page (view)
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/list-students.jsp");
+        request.setAttribute("STUDENTS", students);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/list-student.jsp");
         dispatcher.forward(request, response);
 	}
 
 
 	private void deleteStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
-		int id = Integer.parseInt(request.getParameter("studId"));
+		int id = Integer.parseInt(request.getParameter("student"));
 		studentDbUtil.deleteStudent(id);
 		listStudents(request, response);
 		
@@ -142,7 +137,6 @@ public class StudentControllerServlet extends HttpServlet {
 		
 		RequestDispatcher dispatcher =  request.getRequestDispatcher("/list-student.jsp");
 		dispatcher.forward(request, response);
-		
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

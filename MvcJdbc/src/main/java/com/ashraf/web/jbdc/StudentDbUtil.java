@@ -170,7 +170,7 @@ public class StudentDbUtil {
 		
 		try {
 			myCn = dataSource.getConnection();
-			String sql = "delete student where id=?";
+			String sql = "delete from student where id=?";
 			myStmnt= myCn.prepareStatement(sql);
 			myStmnt.setInt(1, id);
 			
@@ -192,12 +192,22 @@ public class StudentDbUtil {
 			myCn = dataSource.getConnection();
 			
 			if (searchTerm != null && searchTerm.trim().length() > 0) {
-				String sql = "SELECT * FROM students WHERE ? in (first_name, last_name, email, age, course)";
+				String sql = "SELECT * FROM student "
+						+ "WHERE first_name LIKE ? OR "
+						+ "last_name LIKE ? OR "
+						+ "email LIKE ? OR "
+						+ "age = ? OR "
+						+ "course LIKE ?";
 				pStmnt = myCn.prepareStatement(sql);
 				String searchTermLike = "%" + searchTerm + "%";
 				pStmnt.setString(1, searchTermLike);
+				pStmnt.setString(2, searchTermLike);
+				pStmnt.setString(3, searchTermLike);
+				pStmnt.setString(4, searchTerm);
+				pStmnt.setString(5, searchTermLike);
+				
 			} else {
-				String sql = "SELECT * FROM students";
+				String sql = "SELECT * FROM student";
 				pStmnt = myCn.prepareStatement(sql);
 			}
 			
